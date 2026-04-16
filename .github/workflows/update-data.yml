@@ -1,0 +1,32 @@
+name: "Fireworks Schedule Auto-Updater"
+
+on:
+  schedule:
+    - cron: '0 23 * * 0'
+  workflow_dispatch:
+
+jobs:
+  update-schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのソースコードを取得する
+        uses: actions/checkout@v4
+
+      - name: Python環境のセットアップ (AIプログラム用)
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 必要なパッケージのインストール
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 最新情報の取得と書き換え (updater.py) を実行
+        run: python updater.py
+
+      - name: 変更があれば保存・反映（サイト更新ボタンを押す処理）
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 自動更新: 花火大会の最新スケジュールをサイトに反映しました！"
+          file_pattern: data.js
