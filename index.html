@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>静岡県 花火大会カレンダー 2026</title>
+  <meta name="description" content="2026年の静岡県内花火大会の日程とカウントダウン。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-overlay"></div>
+  <main class="container">
+    <header class="header">
+      <h1>SHIZUOKA<br>FIREWORKS 2026</h1>
+      <p>輝く夜空、静岡の夏を彩る花火大会カレンダー</p>
+    </header>
+
+    <section id="hero-countdown" class="glass-panel hero-section">
+      <div class="next-label">NEXT EVENT</div>
+      <h2 id="next-festival-name">花火大会名</h2>
+      <div class="countdown-wrapper">
+        <div class="time-box">
+          <div class="time-value" id="cd-days">00</div>
+          <div class="time-label">DAYS</div>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-box">
+          <div class="time-value" id="cd-hours">00</div>
+          <div class="time-label">HRS</div>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-box">
+          <div class="time-value" id="cd-minutes">00</div>
+          <div class="time-label">MIN</div>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-box">
+          <div class="time-value" id="cd-seconds">00</div>
+          <div class="time-label">SEC</div>
+        </div>
+      </div>
+      <div class="next-festival-details" id="next-festival-details">
+        <!-- 詳細はJSで挿入 -->
+      </div>
+    </section>
+
+    <!-- 3週間以内の大会 (リッチなカード表示) -->
+    <section class="festival-list-section">
+      <h3>Upcoming Schedule (近日開催)</h3>
+      <div class="card-grid" id="festival-list">
+        <!-- カードはJSで挿入 -->
+      </div>
+    </section>
+
+    <!-- 3週間以降の大会 (シンプルなリスト表示) -->
+    <section class="festival-list-section simple-section">
+      <h3>Future Schedule (今後の大会一覧)</h3>
+      <div class="simple-list-container">
+        <table class="simple-list-table" id="simple-festival-list">
+          <thead>
+            <tr>
+              <th>開催日</th>
+              <th>大会名</th>
+              <th>時間</th>
+              <th>打上数 / 煙火店</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JSで挿入 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="pdf-action-area">
+      <a href="pdf-view.html" target="_blank" class="pdf-btn">
+        📋 全大会の一覧をPDF形式で見る（印刷・保存用）
+      </a>
+    </div>
+
+  </main>
+  
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

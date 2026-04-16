@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>静岡県 花火大会 全一覧 2026 (印刷・PDF出力用)</title>
+  <style>
+    body {
+      font-family: "Noto Sans JP", sans-serif;
+      color: #333;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+    .page-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .print-btn {
+      background: #0055ff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .print-btn:hover {
+      background: #0033cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: bold;
+    }
+    .est-mark {
+      color: #d9534f;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .meta-text {
+      font-size: 11px;
+      color: #666;
+    }
+    
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page-container { box-shadow: none; padding: 0; max-width: 100%; }
+      .print-btn { display: none; }
+      .header-actions { border-bottom: 1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="header-actions">
+      <h1>静岡県 花火大会 全一覧 2026</h1>
+      <button class="print-btn" onclick="window.print()">🖨️ PDFとして保存 (印刷)</button>
+    </div>
+    
+    <p style="font-size:13px; color:#555;">※日程の末尾に「(想定)」とあるものは、2026年の公式発表前の予測・未定データです。</p>
+
+    <table id="pdf-table">
+      <thead>
+        <tr>
+          <th width="15%">開催日</th>
+          <th width="35%">大会名</th>
+          <th width="15%">開始時間</th>
+          <th width="15%">打上数</th>
+          <th width="20%">煙火店</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JSで挿入 -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const festivals = window.festivalsData;
+    
+    // Sort by date
+    festivals.forEach(fw => {
+      fw.dateTime = new Date(`${fw.dateStr} ${fw.timeStart}:00`).getTime();
+    });
+    festivals.sort((a, b) => a.dateTime - b.dateTime);
+
+    const tbody = document.querySelector('#pdf-table tbody');
+    festivals.forEach(fw => {
+      const isEst = fw.isEstimated ? '<span class="est-mark"><br>(想定・未定)</span>' : '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fw.dateStr.replace('2026/', '')} ${isEst}</td>
+        <td><strong>${fw.name}</strong></td>
+        <td>${fw.timeStart}</td>
+        <td>${fw.shots}</td>
+        <td class="meta-text">${fw.company}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
