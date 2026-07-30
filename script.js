@@ -29,32 +29,44 @@ function renderList() {
   nextEvent = null; // reset
 
   // 1. Find the next upcoming active event
-  festivals.forEach(fw => {
+  for (let i = 0; i < festivals.length; i++) {
+    const fw = festivals[i];
     const isFinished = (fw.dateTime + 2 * 60 * 60 * 1000) < now;
-    if (!nextEvent && !isFinished) {
+    if (!isFinished) {
       nextEvent = fw;
-      setupHero(fw);
+      break;
     }
-  });
+  }
 
-  // 2. Render cards and table rows
+  // 2. Find all events happening on the same day as the next event
+  const nextDayEvents = [];
+  if (nextEvent) {
+    festivals.forEach(fw => {
+      const isFinished = (fw.dateTime + 2 * 60 * 60 * 1000) < now;
+      if (fw.dateStr === nextEvent.dateStr && !isFinished) {
+        nextDayEvents.push(fw);
+      }
+    });
+    setupHero(nextDayEvents);
+  }
+
+  // 3. Render cards and table rows
   festivals.forEach(fw => {
     const isFinished = (fw.dateTime + 2 * 60 * 60 * 1000) < now;
-    
-    // Skip finished events on the main page to prevent cluttering the top cards
-    if (isFinished) {
-      return;
-    }
-
     const isEstimatedHtml = fw.isEstimated ? '<span class="estimated-tag">想定(未定)</span>' : '';
     const dateDisplay = `${fw.dateStr.replace('2026/', '')} ${isEstimatedHtml}`;
 
     // Display logic:
-    // Show as Card if within 3 weeks OR if it's the very next event (countdown target)
-    if (fw.dateTime <= threeWeeksLater || fw === nextEvent) {
+    // - Show as Card if:
+    //   a) The event is finished (showing as gray card with transparency, per user request)
+    //   b) Within 3 weeks
+    //   c) It is happening on the next event day
+    const isNextDayEvent = nextDayEvents.includes(fw);
+    
+    if (isFinished || fw.dateTime <= threeWeeksLater || isNextDayEvent) {
       if(cardContainer) {
         const card = document.createElement('div');
-        card.className = 'glass-panel festival-card';
+        card.className = `glass-panel festival-card ${isFinished ? 'finished' : ''}`;
         card.innerHTML = `
           <h4>${fw.name}</h4>
           <div class="card-info">
@@ -105,16 +117,23 @@ function renderList() {
   }
 }
 
-function setupHero(fw) {
-  const isEstimatedHtml = fw.isEstimated ? '<span class="estimated-tag" style="border-color:#fff;color:#fff;">未定(想定)</span>' : '';
-  document.getElementById('next-festival-name').innerHTML = `${fw.name} ${isEstimatedHtml}`;
+function setupHero(events) {
+  // Combine all event names for that day
+  const names = events.map(e => e.name).join('<br> & <br>');
+  const hasEstimated = events.some(e => e.isEstimated);
+  const isEstimatedHtml = hasEstimated ? '<span class="estimated-tag" style="border-color:#fff;color:#fff;">未定(想定)あり</span>' : '';
+  
+  document.getElementById('next-festival-name').innerHTML = `${names} ${isEstimatedHtml}`;
+  
+  // Display details for each event on the same day
   const detailsContainer = document.getElementById('next-festival-details');
-  detailsContainer.innerHTML = `
-    <div class="detail-item">📅 ${fw.dateStr}</div>
-    <div class="detail-item">⏰ ${fw.timeStart}〜</div>
-    <div class="detail-item">🎆 ${fw.shots}</div>
-    <div class="detail-item">🏢 ${fw.company}</div>
-  `;
+  detailsContainer.innerHTML = events.map(fw => `
+    <div class="hero-detail-card" style="background: rgba(0, 0, 0, 0.3); padding: 12px 20px; border-radius: 12px; margin: 5px; text-align: left; min-width: 250px; border: 1px solid rgba(255,255,255,0.1)">
+      <div style="font-weight: bold; color: #00e1ff; margin-bottom: 5px;">${fw.name}</div>
+      <div style="font-size: 0.9rem;">📅 ${fw.dateStr}  ⏰ ${fw.timeStart}〜</div>
+      <div style="font-size: 0.9rem;">🎆 ${fw.shots}  🏢 ${fw.company}</div>
+    </div>
+  `).join('');
 }
 
 function updateCountdown() {
