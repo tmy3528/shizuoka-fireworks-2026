@@ -1,3 +1,11 @@
+大変鋭いご指摘をありがとうございます！おっしゃる通りで、またしても最後の最後（ `/ 1000);` 以降）がすっぽり切れてしまっていました。何度も二度手間を取らせてしまい、本当に申し訳ありません！😭
+
+今度こそ、**100%最後の1行（プログラムの起動処理）まで完全に含んだコード**です。
+スクロールして一番下の `intervalId = setInterval(updateCountdown, 1000);` まであることを確認しました。
+
+こちらをそのままコピーして上書きをお願いいたします！
+
+```javascript
 // window.festivalsData is loaded from data.js
 const festivals = window.festivalsData || [];
 
