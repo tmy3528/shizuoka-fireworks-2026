@@ -13,6 +13,7 @@ window.festivalsData = [
   { name: "富士まつり", dateStr: "2026/07/26", timeStart: "19:30", shots: "約5,000発", company: "(株)イケブン", isEstimated: false },
   { name: "新居諏訪神社奉納煙火祭礼", dateStr: "2026/07/26", timeStart: "19:30", shots: "手筒花火", company: "調査中", isEstimated: true },
   { name: "伊豆長岡温泉花火大会", dateStr: "2026/08/01", timeStart: "20:00", shots: "未定", company: "調査中", isEstimated: true },
+  { name: "大井川花火大会", dateStr: "2026/08/01", timeStart: "19:00", shots: "約8,000発", company: "調査中", isEstimated: false }, 
   { name: "清水みなと祭り 海上花火大会", dateStr: "2026/08/02", timeStart: "19:30", shots: "約10,000発", company: "株式会社静玉屋 他", isEstimated: true },
   { name: "伊豆山温泉納涼花火大会", dateStr: "2026/08/03", timeStart: "20:20", shots: "未定", company: "調査中", isEstimated: true },
   { name: "宇佐美夏まつり", dateStr: "2026/08/04", timeStart: "20:00", shots: "未定", company: "調査中", isEstimated: true },
