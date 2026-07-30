@@ -6,7 +6,7 @@ festivals.forEach(fw => {
   fw.dateTime = new Date(`${fw.dateStr} ${fw.timeStart}:00`).getTime();
 });
 
-// Sort by date
+// Sort by date (Chronological order: earliest to latest)
 festivals.sort((a, b) => a.dateTime - b.dateTime);
 
 const cdDays = document.getElementById('cd-days');
@@ -28,26 +28,33 @@ function renderList() {
   
   nextEvent = null; // reset
 
+  // 1. Find the next upcoming active event
   festivals.forEach(fw => {
-    // If the event start time + 2 hours has passed, mark it as finished
     const isFinished = (fw.dateTime + 2 * 60 * 60 * 1000) < now;
-    
-    // Find the next active event based on current time
     if (!nextEvent && !isFinished) {
       nextEvent = fw;
       setupHero(fw);
+    }
+  });
+
+  // 2. Render cards and table rows
+  festivals.forEach(fw => {
+    const isFinished = (fw.dateTime + 2 * 60 * 60 * 1000) < now;
+    
+    // Skip finished events on the main page to prevent cluttering the top cards
+    if (isFinished) {
+      return;
     }
 
     const isEstimatedHtml = fw.isEstimated ? '<span class="estimated-tag">想定(未定)</span>' : '';
     const dateDisplay = `${fw.dateStr.replace('2026/', '')} ${isEstimatedHtml}`;
 
-    // Display logic: Within 3 weeks from now -> Card format, Later -> Simple format
-    // UPDATE requested by user: The "nextEvent" (countdown target) should ALWAYS be displayed as a Card!
-    if (fw.dateTime <= threeWeeksLater || isFinished || fw === nextEvent) {
-      // Show as rich card
+    // Display logic:
+    // Show as Card if within 3 weeks OR if it's the very next event (countdown target)
+    if (fw.dateTime <= threeWeeksLater || fw === nextEvent) {
       if(cardContainer) {
         const card = document.createElement('div');
-        card.className = `glass-panel festival-card ${isFinished ? 'finished' : ''}`;
+        card.className = 'glass-panel festival-card';
         card.innerHTML = `
           <h4>${fw.name}</h4>
           <div class="card-info">
@@ -72,7 +79,7 @@ function renderList() {
         cardContainer.appendChild(card);
       }
     } else {
-      // Show as simple table row
+      // Show as simple table row for future events (farther than 3 weeks)
       if(simpleContainer) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -136,16 +143,3 @@ function updateCountdown() {
   const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  cdDays.innerText = String(days).padStart(2, '0');
-  cdHours.innerText = String(hours).padStart(2, '0');
-  cdMinutes.innerText = String(minutes).padStart(2, '0');
-  cdSeconds.innerText = String(seconds).padStart(2, '0');
-}
-
-// Init
-renderList();
-if (nextEvent) {
-  updateCountdown();
-  intervalId = setInterval(updateCountdown, 1000);
-}
