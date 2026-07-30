@@ -1,11 +1,3 @@
-大変鋭いご指摘をありがとうございます！おっしゃる通りで、またしても最後の最後（ `/ 1000);` 以降）がすっぽり切れてしまっていました。何度も二度手間を取らせてしまい、本当に申し訳ありません！😭
-
-今度こそ、**100%最後の1行（プログラムの起動処理）まで完全に含んだコード**です。
-スクロールして一番下の `intervalId = setInterval(updateCountdown, 1000);` まであることを確認しました。
-
-こちらをそのままコピーして上書きをお願いいたします！
-
-```javascript
 // window.festivalsData is loaded from data.js
 const festivals = window.festivalsData || [];
 
@@ -150,4 +142,17 @@ function updateCountdown() {
   const days = Math.floor(distance / (1000 * 60 * 60 * 24));
   const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60))
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  cdDays.innerText = String(days).padStart(2, '0');
+  cdHours.innerText = String(hours).padStart(2, '0');
+  cdMinutes.innerText = String(minutes).padStart(2, '0');
+  cdSeconds.innerText = String(seconds).padStart(2, '0');
+}
+
+// Init
+renderList();
+if (nextEvent) {
+  updateCountdown();
+  intervalId = setInterval(updateCountdown, 1000);
+}
