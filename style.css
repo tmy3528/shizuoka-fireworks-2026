@@ -351,3 +351,27 @@ body {
   .countdown-wrapper { gap: 8px; }
   .pdf-btn { padding: 15px 20px; font-size: 0.95rem; }
 }
+
+/* Event Link Style */
+.event-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+  display: inline-block;
+}
+.event-link:hover {
+  color: var(--primary-color) !important;
+  text-decoration: underline;
+}
+.hero-link {
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+  padding-bottom: 2px;
+}
+.hero-link:hover {
+  border-bottom-color: var(--primary-color);
+}
+.hero-detail-card:hover {
+  background: rgba(0, 225, 255, 0.15) !important;
+  border-color: var(--primary-color) !important;
+  transform: translateY(-2px);
+}
